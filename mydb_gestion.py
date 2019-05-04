@@ -31,7 +31,7 @@ class db_request():
             if len(categories_name) >= 30:
                 continue
         data = (categories_name, categories['url'])
-
+    
         db.execute("INSERT IGNORE INTO `mydb`.`Categories` (category_name, category_url) VALUES ('{}', '{}')".format(
             categories_name, categories['url']))
         self.db_connect.commit()
@@ -40,3 +40,21 @@ class db_request():
         db.execute("SELECT COUNT(*) FROM `mydb`.`Categories`")
         sql_return = db.fetchone()
         print("Database loaded with %s product categories" % (sql_return))
+
+    def db_cleardata(self):
+
+        self.db_connect = pymysql.connect("localhost","user_db","pw_db","mydb")
+        db = self.db_connect.cursor()
+
+        db.execute("DELETE FROM `mydb`.`Categories`")
+        db.execute("ALTER TABLE `mydb`.`Categories` AUTO_INCREMENT = 1")
+
+        #db.execute("DELETE FROM `mydb`.`Products`")
+        #db.execute("ALTER TABLE `mydb`.`Products` AUTO_INCREMENT = 1")
+
+        #db.execute("DELETE FROM `mydb`.`Subtitute`")
+        #db.execute("ALTER TABLE `mydb`.`Subtitute` AUTO_INCREMENT = 1")
+        self.db_connect.commit()
+        print("\n**********************************************")
+        print("* !!!The data in the database are deleted!!! *")
+        print("**********************************************")

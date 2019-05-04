@@ -63,6 +63,6 @@ while main_app_loop is True:
         #elif int(choice) == 3:
         #    access_saved = db_request()
         #    access_saved.db_saved()
-        #elif int(choice) == 4:
-        #    clear_backup = db_request()
-        #    clear_backup.db_cleardata()
+        elif int(choice) == 4:
+            clear_backup = db_request()
+            clear_backup.db_cleardata()
