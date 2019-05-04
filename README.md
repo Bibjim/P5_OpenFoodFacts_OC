@@ -1,12 +1,15 @@
 ![logo oc](https://cdn.welcometothejungle.co/uploads/organization/logo/9778/150891/openclassrooms.jpg)
 
 ## Project 5 OpenFoodFacts, Openclassrooms DEV Python
-    @
+
 This app is intended to help people who want to find alternative foods to improve
 their eating habits with the site database **OpenFoodFacts.com**
 (https://world.openfoodfacts.org/)
 
 Clone or download this project in your computer: https://github.com/Bibjim/P5_OpenFoodFacts_OC.git
+
+Lien Trello: https://trello.com/b/FaKmnu5U/projet-5-off
+
 
 ### ***How to use the application?***
 
