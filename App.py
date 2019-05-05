@@ -30,6 +30,7 @@ def clear_prompt():
 
 while main_app_loop is True:
     choice = 0
+ #   prod = 0
     clear_prompt()
     
     print("\nWelcome to the Database OpenFoodFacts.com (FR version)\n")
@@ -47,19 +48,20 @@ while main_app_loop is True:
             main_app_loop = False
             break
 
-        # Check if the input is a digit and between 0 and 5
         elif choice.isdigit() == False or int(choice) >= 5 or int(choice) == 0:
             print("\nYou must enter a number between 1 and 4\n")
             time.sleep(2)
             break
+ #   while prod == 0:
+ #       prod = input("\n selectionnez votre catégories de produits dans la liste: ")
 
-        # Run the input choice
+        
         elif int(choice) == 1:
             dfcat = db_request()
             dfcat.create_db_cat()
-        #elif int(choice) == 2:
-        #    search_prod = db_request()
-        #    search_prod.db_products()
+        elif int(choice) == 2:
+            search_prod = db_request()
+            search_prod.show_list_cat()
         #elif int(choice) == 3:
         #    access_saved = db_request()
         #    access_saved.db_saved()
