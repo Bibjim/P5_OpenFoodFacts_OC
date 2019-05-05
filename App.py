@@ -65,4 +65,6 @@ while main_app_loop is True:
         #    access_saved.db_saved()
         elif int(choice) == 4:
             clear_backup = db_request()
-            clear_backup.db_cleardata()
+            clear_backup.db_cleardata_cat()
+            clear_backup.db_cleardata_prod()
+            clear_backup.db_cleardata_sub()

@@ -30,18 +30,20 @@ class db_request():
             categories_name = categories_name.replace("'", " ")
             if len(categories_name) >= 30:
                 continue
-        data = (categories_name, categories['url'])
-    
-        db.execute("INSERT IGNORE INTO `mydb`.`Categories` (category_name, category_url) VALUES ('{}', '{}')".format(
-            categories_name, categories['url']))
-        self.db_connect.commit()
+            dfAll = (categories_name, categories['url'])
+
+            db.execute("INSERT IGNORE INTO `mydb`.`Categories` (category_name, category_url) VALUES ('{}', '{}')".format(
+                categories_name, categories['url']))
+            self.db_connect.commit()
 
                 
         db.execute("SELECT COUNT(*) FROM `mydb`.`Categories`")
         sql_return = db.fetchone()
-        print("Database loaded with %s product categories" % (sql_return))
+        print("\n*********************************************")
+        print("* Database loaded with %s product categories *" % (sql_return))
+        print("*********************************************")
 
-    def db_cleardata(self):
+    def db_cleardata_cat(self):
 
         self.db_connect = pymysql.connect("localhost","user_db","pw_db","mydb")
         db = self.db_connect.cursor()
@@ -49,12 +51,34 @@ class db_request():
         db.execute("DELETE FROM `mydb`.`Categories`")
         db.execute("ALTER TABLE `mydb`.`Categories` AUTO_INCREMENT = 1")
 
-        #db.execute("DELETE FROM `mydb`.`Products`")
-        #db.execute("ALTER TABLE `mydb`.`Products` AUTO_INCREMENT = 1")
+        self.db_connect.commit()
+        print("\n***********************************************************")
+        print("* !!!The data in the database 'Categories' are deleted!!! *")
+        print("***********************************************************")
+
+    def db_cleardata_prod(self):
+
+        self.db_connect = pymysql.connect("localhost","user_db","pw_db","mydb")
+        db = self.db_connect.cursor()
+
+        db.execute("DELETE FROM `mydb`.`Products`")
+        db.execute("ALTER TABLE `mydb`.`Products` AUTO_INCREMENT = 1")
 
         #db.execute("DELETE FROM `mydb`.`Subtitute`")
         #db.execute("ALTER TABLE `mydb`.`Subtitute` AUTO_INCREMENT = 1")
         self.db_connect.commit()
-        print("\n**********************************************")
-        print("* !!!The data in the database are deleted!!! *")
-        print("**********************************************")
+        print("\n*********************************************************")
+        print("* !!!The data in the database 'Products' are deleted!!! *")
+        print("*********************************************************")
+
+    def db_cleardata_sub(self):
+
+        self.db_connect = pymysql.connect("localhost","user_db","pw_db","mydb")
+        db = self.db_connect.cursor()
+
+        db.execute("DELETE FROM `mydb`.`Subtitute`")
+        db.execute("ALTER TABLE `mydb`.`Subtitute` AUTO_INCREMENT = 1")
+        self.db_connect.commit()
+        print("\n***********************************************************")
+        print("* !!!The data in the database 'Substitute' are deleted!!! *")
+        print("***********************************************************")
