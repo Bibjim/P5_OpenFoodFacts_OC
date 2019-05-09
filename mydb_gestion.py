@@ -39,16 +39,30 @@ class db_request():
                 
         db.execute("SELECT COUNT(*) FROM `mydb`.`Categories`")
         sql_return = db.fetchone()
-        print("\n*********************************************************")
-        print("* The database is loaded with %s categories of products *" % (sql_return))
-        print("*********************************************************")
+        print("\n*****************************************************************")
+        print("* La base de données est chargée avec %s catégories de produits *" % (sql_return))
+        print("*****************************************************************")
+
+    def create_db_prod(self):
+
+        self.db_connect = pymysql.connect("localhost","user_db","pw_db","mydb")
+        db = self.db_connect.cursor()
+
+        db.execute("SELECT category_url FROM `mydb`.`Categories`")
+        result_url = db.fetchone()
+        list_url_prod = result_url
+        list_url_prod += ".json"
+        url_prod = req.urlopen(list_url_prod)
+        data = url_prod.read()
+        dfprod = json.loads(data.decode("utf_8"))
+        print(dfprod)
 
     def show_list_cat(self):
         
         self.db_connect = pymysql.connect("localhost","user_db","pw_db","mydb")
         db = self.db_connect.cursor()
 
-        print("\n List of categories:\n")
+        print("\n Liste des catégories:\n")
         db.execute("SELECT category_id, category_name FROM `mydb`.`Categories`")
         for ligne in db.fetchall():
             print(ligne)
@@ -61,9 +75,9 @@ class db_request():
         db.execute("DELETE FROM `mydb`.`Categories`")
         db.execute("ALTER TABLE `mydb`.`Categories` AUTO_INCREMENT = 1")
         self.db_connect.commit()
-        print("\n***********************************************************")
-        print("* !!!The data in the database 'Categories' are deleted!!! *")
-        print("***********************************************************")
+        print("\n*********************************************************************")
+        print("* !!!La table de données 'Categories' a été supprimée de la base!!! *")
+        print("*********************************************************************")
 
     def db_cleardata_prod(self):
 
@@ -73,9 +87,9 @@ class db_request():
         db.execute("DELETE FROM `mydb`.`Products`")
         db.execute("ALTER TABLE `mydb`.`Products` AUTO_INCREMENT = 1")
         self.db_connect.commit()
-        print("\n*********************************************************")
-        print("* !!!The data in the database 'Products' are deleted!!! *")
-        print("*********************************************************")
+        print("\n*******************************************************************")
+        print("* !!!La table de données 'Products' a été supprimée de la base!!! *")
+        print("*******************************************************************")
 
     def db_cleardata_sub(self):
 
@@ -85,6 +99,6 @@ class db_request():
         db.execute("DELETE FROM `mydb`.`Subtitute`")
         db.execute("ALTER TABLE `mydb`.`Subtitute` AUTO_INCREMENT = 1")
         self.db_connect.commit()
-        print("\n***********************************************************")
-        print("* !!!The data in the database 'Substitute' are deleted!!! *")
-        print("***********************************************************")
+        print("\n*********************************************************************")
+        print("* !!!La table de données 'Substitute' a été supprimée de la base!!! *")
+        print("*********************************************************************")

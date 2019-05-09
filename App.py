@@ -30,31 +30,27 @@ def clear_prompt():
 
 while main_app_loop is True:
     choice = 0
- #   prod = 0
     clear_prompt()
     
-    print("\nWelcome to the Database OpenFoodFacts.com (FR version)\n")
-    print("What do you want to do ?\n")
-    print("1 - Load the database locally* ?")
-    print("2 - Search for a product in the categories ?")
-    print("3 - Access saved products ?")
-    print("4 - Clear backup products ?")
-    print("\n *When using for the first time, load the database locally for the application to work")
+    print("\nBienvenue sur la base de données d'OpenFoodFacts.com (Version FR)\n")
+    print("Menu principale de la base de données:")
+    print("1 - Charger la base de données en local* ?")
+    print("2 - Rechercher un produit de substitution dans la base ?")
+    print("3 - Accéder de vos produits préféres ?")
+    print("4 - Supprimer vos produits préféres ?")
+    print("\n *Pour la premère utilisation du programme, oublier pas de charger les données dans la base")
     
     while choice == 0:
-        choice = input("\nYour choise (Type Q to exit): ")
+        choice = input("\nVotre choix (Entrer Q pour quitter le programme): ")
 
         if choice.upper() == "Q":
             main_app_loop = False
             break
 
         elif choice.isdigit() == False or int(choice) >= 5 or int(choice) == 0:
-            print("\nYou must enter a number between 1 and 4\n")
+            print("\nMerci de bien vouloir entrer un chiffre compris entre 1 et 4\n")
             time.sleep(2)
             break
- #   while prod == 0:
- #       prod = input("\n selectionnez votre catégories de produits dans la liste: ")
-
         
         elif int(choice) == 1:
             dfcat = db_request()
@@ -62,9 +58,9 @@ while main_app_loop is True:
         elif int(choice) == 2:
             search_prod = db_request()
             search_prod.show_list_cat()
-        #elif int(choice) == 3:
-        #    access_saved = db_request()
-        #    access_saved.db_saved()
+        elif int(choice) == 3:
+            access_saved = db_request()
+            access_saved.create_db_prod()
         elif int(choice) == 4:
             clear_backup = db_request()
             clear_backup.db_cleardata_cat()
