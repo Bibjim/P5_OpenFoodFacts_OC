@@ -53,11 +53,13 @@ while main_app_loop is True:
             break
         
         elif int(choice) == 1:
-            dfcat = db_request()
-            dfcat.create_db_cat()
+            dfdownload = db_request()
+            dfdownload.create_db_cat()
+            dfdownload.create_db_prod()
         elif int(choice) == 2:
             search_prod = db_request()
             search_prod.show_list_cat()
+            search_prod.show_list_prod()
         elif int(choice) == 3:
             access_saved = db_request()
             access_saved.create_db_prod()

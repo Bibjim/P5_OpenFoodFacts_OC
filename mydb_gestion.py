@@ -48,14 +48,54 @@ class db_request():
         self.db_connect = pymysql.connect("localhost","user_db","pw_db","mydb")
         db = self.db_connect.cursor()
 
-        db.execute("SELECT category_url FROM `mydb`.`Categories`")
-        result_url = db.fetchone()
-        list_url_prod = result_url
-        list_url_prod += ".json"
-        url_prod = req.urlopen(list_url_prod)
-        data = url_prod.read()
-        dfprod = json.loads(data.decode("utf_8"))
-        print(dfprod)
+        db.execute("SELECT category_id, category_url FROM `mydb`.`Categories`")
+        
+        for ligne in db.fetchall():
+            list_id_cat = ligne[0]
+            list_url_cat = ligne[1]
+            list_url_cat += '.json'
+            
+            url_prod = req.urlopen(list_url_cat)
+            data = url_prod.read()
+            dfAll = json.loads(data.decode("utf_8"))
+                
+            for products in dfAll['products']:
+                product_name = products['product_name']
+                product_name = product_name.replace("'", " ")
+                if 'stores' in products:
+                    product_shop = str(products['stores'])
+                    product_shop = product_shop.replace(' ', '-')
+                    product_shop = product_shop.replace("'", " ")
+                    if product_shop is "":
+                        product_shop = ("Shop inconnu")
+                else:
+                    product_shop = ("Shop inconnu")
+                product_url = products['url']
+                product_nutri = products['nutrition_score_debug']
+
+                try:
+                    int(product_nutri[len(product_nutri)-2])
+                    nutrition_score = product_nutri[len(product_nutri)-2]+product_nutri[len(product_nutri)-1]
+                except:
+                    nutrition_score = product_nutri[len(product_nutri)-1]
+                if nutrition_score.isdigit() is True:    
+                    nutrition_score = int(nutrition_score)
+                else:
+                    nutrition_score = 0
+                
+                dfAll = (product_name, product_shop, nutrition_score, product_url)
+                #print(dfAll)
+
+                rec = "INSERT IGNORE INTO `mydb`.`Products`(product_name, product_shop, product_nutri, product_url, Categories_category_id) VALUES ('{}','{}','{}','{}','{}')".format(product_name, product_shop, nutrition_score, product_url, list_id_cat)
+                #print(rec)
+                db.execute(rec)
+                self.db_connect.commit()
+        
+        db.execute("SELECT COUNT(*) FROM `mydb`.`Products`")
+        sql_return = db.fetchone()
+        print("\n***************************************************")
+        print("* La base de données est chargée avec %s produits *" % (sql_return))
+        print("***************************************************")
 
     def show_list_cat(self):
         
@@ -65,7 +105,21 @@ class db_request():
         print("\n Liste des catégories:\n")
         db.execute("SELECT category_id, category_name FROM `mydb`.`Categories`")
         for ligne in db.fetchall():
-            print(ligne)
+            list_id_cat = ligne[0]
+            list_name_cat = ligne[1]
+            print(list_id_cat,'-', list_name_cat)
+
+    def show_list_prod(self):
+        
+        self.db_connect = pymysql.connect("localhost","user_db","pw_db","mydb")
+        db = self.db_connect.cursor()
+
+        print("\n Liste des produits par catégories:\n")
+        db.execute("SELECT product_name, Categories_category_id FROM `mydb`.`Products`")
+        for ligne in db.fetchall():
+            list_name_prod = ligne[0]
+            list_id_cat = ligne[1]
+            print(list_id_cat,"-",list_name_prod)
 
     def db_cleardata_cat(self):
 
