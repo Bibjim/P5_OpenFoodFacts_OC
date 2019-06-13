@@ -11,6 +11,7 @@ Code language: Python3
 Coding: Utf-8
 """
 
+import pymysql.cursors
 import urllib.request
 import json
 import time
@@ -18,6 +19,7 @@ import os
 import sys
 
 from mydb_gestion import *
+from substitue_products import *
 
 
 main_app_loop = True
@@ -33,7 +35,7 @@ while main_app_loop is True:
     clear_prompt()
     
     print("\nBienvenue sur la base de données d'OpenFoodFacts.com (Version FR)\n")
-    print("Menu principale de la base de données:")
+    print("Menu principal de la base de données:")
     print("1 - Charger la base de données en local* ?")
     print("2 - Rechercher un produit de substitution dans la base ?")
     print("3 - Accéder de vos produits préféres ?")
@@ -47,24 +49,27 @@ while main_app_loop is True:
             main_app_loop = False
             break
 
-        elif choice.isdigit() == False or int(choice) >= 5 or int(choice) == 0:
+        elif choice.isdigit() == False or int(choice) >= 7 or int(choice) == 0:
             print("\nMerci de bien vouloir entrer un chiffre compris entre 1 et 4\n")
             time.sleep(2)
             break
         
         elif int(choice) == 1:
             dfdownload = db_request()
-            dfdownload.create_db_cat()
+            #dfdownload.create_db_cat()
             dfdownload.create_db_prod()
         elif int(choice) == 2:
-            search_prod = db_request()
-            search_prod.show_list_cat()
-            search_prod.show_list_prod()
+            search_prod = db_menu()
+            search_prod.search_prod()
         elif int(choice) == 3:
-            access_saved = db_request()
-            access_saved.create_db_prod()
+            access_saved = db_menu()
+            access_saved.search_substitute()
         elif int(choice) == 4:
             clear_backup = db_request()
             clear_backup.db_cleardata_cat()
+        elif int(choice) == 5:
+            clear_backup = db_request()
             clear_backup.db_cleardata_prod()
+        elif int(choice) == 6:
+            clear_backup = db_request()
             clear_backup.db_cleardata_sub()

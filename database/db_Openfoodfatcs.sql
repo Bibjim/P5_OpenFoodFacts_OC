@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Products` (
   `product_id` INT NOT NULL AUTO_INCREMENT,
   `product_name` VARCHAR(75) NOT NULL,
   `product_shop` VARCHAR(75) NULL,
-  `product_nutri` INT NOT NULL,
+  `product_nutri` VARCHAR(75) NULL,
   `product_url` VARCHAR(150) NOT NULL,
   `Categories_category_id` INT NOT NULL,
   PRIMARY KEY (`product_id`),

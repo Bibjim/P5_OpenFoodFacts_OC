@@ -12,6 +12,8 @@ import urllib.request as req
 import json
 import pymysql.cursors
 
+from substitue_products import *
+
 class db_request():
 
     def create_db_cat(self):
@@ -60,42 +62,39 @@ class db_request():
             dfAll = json.loads(data.decode("utf_8"))
                 
             for products in dfAll['products']:
-                product_name = products['product_name']
-                product_name = product_name.replace("'", " ")
+                product_name = products.get('product_name_fr', "")
+                product_name = product_name.replace("'"," ")
+                if product_name is "":
+                    break
+                
+                product_nutri = products.get('nutrition_grades_tags', "")
+                product_nutri = str(product_nutri)
+                product_nutri = product_nutri.replace("[", "")
+                product_nutri = product_nutri.replace("'", "")
+                product_nutri = product_nutri.replace("]", "")
+
                 if 'stores' in products:
                     product_shop = str(products['stores'])
-                    product_shop = product_shop.replace(' ', '-')
-                    product_shop = product_shop.replace("'", " ")
+                    product_shop = product_shop.replace(" ", "-")
+                    product_shop = product_shop.replace("'", "")
+                    product_shop = product_shop.replace(",", " ")
                     if product_shop is "":
                         product_shop = ("Shop inconnu")
+               
                 else:
                     product_shop = ("Shop inconnu")
                 product_url = products['url']
-                product_nutri = products['nutrition_score_debug']
 
-                try:
-                    int(product_nutri[len(product_nutri)-2])
-                    nutrition_score = product_nutri[len(product_nutri)-2]+product_nutri[len(product_nutri)-1]
-                except:
-                    nutrition_score = product_nutri[len(product_nutri)-1]
-                if nutrition_score.isdigit() is True:    
-                    nutrition_score = int(nutrition_score)
-                else:
-                    nutrition_score = 0
-                
-                dfAll = (product_name, product_shop, nutrition_score, product_url)
-                #print(dfAll)
-
-                rec = "INSERT IGNORE INTO `mydb`.`Products`(product_name, product_shop, product_nutri, product_url, Categories_category_id) VALUES ('{}','{}','{}','{}','{}')".format(product_name, product_shop, nutrition_score, product_url, list_id_cat)
-                #print(rec)
+                rec = "INSERT IGNORE INTO `mydb`.`Products`(product_name, product_shop, product_nutri, product_url, Categories_category_id) VALUES ('{}','{}','{}','{}','{}') ON DUPLICATE KEY UPDATE product_name = '{}'".format(product_name, product_shop, product_nutri, product_url, list_id_cat, product_name)
+                print(rec)
                 db.execute(rec)
                 self.db_connect.commit()
         
-        db.execute("SELECT COUNT(*) FROM `mydb`.`Products`")
-        sql_return = db.fetchone()
-        print("\n***************************************************")
-        print("* La base de données est chargée avec %s produits *" % (sql_return))
-        print("***************************************************")
+        #db.execute("SELECT COUNT(*) FROM `mydb`.`Products`")
+        #sql_return = db.fetchone()
+        #print("\n***************************************************")
+        #print("* La base de données est chargée avec %s produits *" % (sql_return))
+        #print("***************************************************")
 
     def show_list_cat(self):
         
