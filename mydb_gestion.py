@@ -18,7 +18,7 @@ class db_request():
 
     def create_db_cat(self):
 
-        self.db_connect = pymysql.connect("localhost","user_db","pw_db","mydb")
+        self.db_connect = pymysql.connect("localhost","root","","mydb")
         db = self.db_connect.cursor()
 
         url="https://fr.openfoodfacts.org/categories.json"
@@ -47,7 +47,7 @@ class db_request():
 
     def create_db_prod(self):
 
-        self.db_connect = pymysql.connect("localhost","user_db","pw_db","mydb")
+        self.db_connect = pymysql.connect("localhost","root","","mydb")
         db = self.db_connect.cursor()
 
         db.execute("SELECT category_id, category_url FROM `mydb`.`Categories`")
@@ -86,19 +86,19 @@ class db_request():
                 product_url = products['url']
 
                 rec = "INSERT IGNORE INTO `mydb`.`Products`(product_name, product_shop, product_nutri, product_url, Categories_category_id) VALUES ('{}','{}','{}','{}','{}') ON DUPLICATE KEY UPDATE product_name = '{}'".format(product_name, product_shop, product_nutri, product_url, list_id_cat, product_name)
-                print(rec)
+                #print(rec)
                 db.execute(rec)
                 self.db_connect.commit()
         
-        #db.execute("SELECT COUNT(*) FROM `mydb`.`Products`")
-        #sql_return = db.fetchone()
-        #print("\n***************************************************")
-        #print("* La base de données est chargée avec %s produits *" % (sql_return))
-        #print("***************************************************")
+        db.execute("SELECT COUNT(*) FROM `mydb`.`Products`")
+        sql_return = db.fetchone()
+        print("\n***************************************************")
+        print("* La base de données est chargée avec %s produits *" % (sql_return))
+        print("***************************************************")
 
     def show_list_cat(self):
         
-        self.db_connect = pymysql.connect("localhost","user_db","pw_db","mydb")
+        self.db_connect = pymysql.connect("localhost","root","","mydb")
         db = self.db_connect.cursor()
 
         print("\n Liste des catégories:\n")
@@ -110,7 +110,7 @@ class db_request():
 
     def show_list_prod(self):
         
-        self.db_connect = pymysql.connect("localhost","user_db","pw_db","mydb")
+        self.db_connect = pymysql.connect("localhost","root","","mydb")
         db = self.db_connect.cursor()
 
         print("\n Liste des produits par catégories:\n")
@@ -122,7 +122,7 @@ class db_request():
 
     def db_cleardata_cat(self):
 
-        self.db_connect = pymysql.connect("localhost","user_db","pw_db","mydb")
+        self.db_connect = pymysql.connect("localhost","root","","mydb")
         db = self.db_connect.cursor()
 
         db.execute("DELETE FROM `mydb`.`Categories`")
@@ -134,7 +134,7 @@ class db_request():
 
     def db_cleardata_prod(self):
 
-        self.db_connect = pymysql.connect("localhost","user_db","pw_db","mydb")
+        self.db_connect = pymysql.connect("localhost","root","","mydb")
         db = self.db_connect.cursor()
 
         db.execute("DELETE FROM `mydb`.`Products`")
@@ -146,11 +146,11 @@ class db_request():
 
     def db_cleardata_sub(self):
 
-        self.db_connect = pymysql.connect("localhost","user_db","pw_db","mydb")
+        self.db_connect = pymysql.connect("localhost","root","","mydb")
         db = self.db_connect.cursor()
 
-        db.execute("DELETE FROM `mydb`.`Subtitute`")
-        db.execute("ALTER TABLE `mydb`.`Subtitute` AUTO_INCREMENT = 1")
+        db.execute("DELETE FROM `mydb`.`Substitute`")
+        db.execute("ALTER TABLE `mydb`.`Substitute` AUTO_INCREMENT = 1")
         self.db_connect.commit()
         print("\n*********************************************************************")
         print("* !!!La table de données 'Substitute' a été supprimée de la base!!! *")
