@@ -10,17 +10,10 @@
 
 # Requets of create database structure
 # Create database name
-db_mydb = """
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ; """
+db_mydb = """CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ; """
 
 # Requet of create table "categories"
-table_categories = """
-CREATE TABLE IF NOT EXISTS `mydb`.`Categoris` (
-  `category_id` INT NOT NULL AUTO_INCREMENT, 
-  `category_name` VARCHAR(150) NOT NULL,
-  `category_url` VARCHAR(200) NOT NULL,
-  PRIMARY KEY (`category_id`))
-ENGINE = InnoDB; """
+table_categories = """CREATE TABLE IF NOT EXISTS `mydb`.`Categoris` (`category_id` INT NOT NULL AUTO_INCREMENT, `category_name` VARCHAR(150) NOT NULL, `category_url` VARCHAR(200) NOT NULL, PRIMARY KEY (`category_id`)) ENGINE = InnoDB; """
 
 # Requet of create table "products"
 table_products = """

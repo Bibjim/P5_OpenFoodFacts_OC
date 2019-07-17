@@ -4,8 +4,7 @@
 '''
     substitute_products.py
     Author: Jimi Bourgeois
-    Version: 20190516
-    Describe: ...
+    Version: 20190717
 '''
 
 import urllib.request as req
@@ -17,9 +16,17 @@ import random
 from mydb_gestion import *
 
 class db_menu():
+    """
+    Cette classe sert à rechercher des produits de substitution dans la base
+    et les sauvegarder dans la base via des requetes SQL.
+    Elle sert également à afficher les produits sauvegarder dans la base.
+    """
 
     def search_prod(self):
-
+        """
+        Fonction de recherche de produit et de sauvegarde dans la base
+        """
+        #Connexion à la base SQL
         self.db_connect = pymysql.connect("localhost","root","","mydb")
         db = self.db_connect.cursor()
 
@@ -59,6 +66,7 @@ class db_menu():
                         list_id_prod = ligne[0]
                         list_name_prod = ligne[1]
                         nutriscore_prod = ligne[2]
+                        nutriscore_prod = nutriscore_prod.upper()
                         print(list_id_prod,"-", list_name_prod, "- Nutriscore:",nutriscore_prod)
                         continue
                         
@@ -73,37 +81,27 @@ class db_menu():
                         show_list_sub_select = f"SELECT * FROM `mydb`.`Products` WHERE product_id = {choice_sub}"
                         db.execute(show_list_sub_select)
                         for ligne_sub in db.fetchall():
-                            sub_id = ligne_sub[0]
                             sub_name = ligne_sub[1]
                             sub_nutri = ligne_sub[3]
+                            sub_nutri = sub_nutri.upper()
                             
                             list_best_nutri = f"SELECT * FROM `mydb`.`Products` WHERE Categories_category_id = {choice_cat} AND product_nutri <= '{sub_nutri}' ORDER BY product_nutri ASC"
 
                             db.execute(list_best_nutri)
                             result = db.fetchall()
                             best = (result)[0]
-                            product_select = "Pas de produit à substituer"
-                            if sub_nutri == (best)[3]:
+                            bestnutri = (best)[3]
+                            bestnutri = bestnutri.upper()
+                            if sub_nutri == bestnutri:
                                 print("\nLe produit sélectionné a le meilleur nutriscore de cette catégorie")
-                                save_choice2 = 0
-                                while save_choice2 is 0:
-                                    choice = input("Souhaitez-vous quand même sauvegarder le produit dans les favoris ? O/n ")
-                                    if choice.upper() == "N":
-                                        print("\nRetour au menu principal")
-                                        time.sleep(3)
-                                        break
-                                    elif choice.upper() == "O":
-                                        db.execute("INSERT IGNORE INTO `mydb`.`Substitute` (save_product_id, save_product_sub_name) VALUES ('{}','{}')".format(sub_id, product_select))
-                                        self.db_connect.commit()
-                                        print("\nLe produit a bien été sauvegardé dans vos favoris")
-                                        print("Retour au menu principal")
-                                        time.sleep(3)
-                                        break
+                                print("Veuillez sélectionner un autre produit dans la liste")
+                                choice_sub = 0
                                 
                             else:
                                 best_id = (best)[0]
                                 best_name = (best)[1]
                                 best_nutriscore = (best)[3]
+                                best_nutriscore = best_nutriscore.upper()
                                 best_shop = (best)[2]
                                 best_url = (best)[4]
                                 print("\nProduit sélectionné:",sub_name,". Nutriscore:",sub_nutri)
@@ -118,7 +116,8 @@ class db_menu():
                                         time.sleep(3)
                                         break
                                     elif save_choice1.upper() == "O":
-                                        db.execute("INSERT IGNORE INTO `mydb`.`Substitute` (save_product_id, save_product_sub_name) VALUES ('{}','{}')".format(best_id, sub_name))
+                                        save_sub = "INSERT IGNORE INTO `mydb`.`Substitute` (save_product_id, save_product_sub_name) VALUES ('{}','{}')".format(best_id, sub_name)
+                                        db.execute(save_sub)
                                         self.db_connect.commit()
                                         print("\nLe produit a bien été sauvegardé dans vos favoris")
                                         print("Retour au menu principal")
@@ -142,12 +141,11 @@ class db_menu():
             elif choice.upper() == "O":
                 save_show = "SELECT * FROM PRODUCTS INNER JOIN SUBSTITUTE ON PRODUCTS.product_id = SUBSTITUTE.save_product_id INNER JOIN CATEGORIES ON PRODUCTS.Categories_category_id = CATEGORIES.category_id WHERE SUBSTITUTE.save_product_id"
                 db.execute(save_show)
-                #print(save_show)
                 for results in db.fetchall():
-                    #print(results)
                     name_sub = results[8]
                     name_save = results[1]
                     nutri_save = results[3]
+                    nutri_save = nutri_save.upper()
                     shop_save = results[2]
                     url_save = results[4]
                     cat_save = results[10]
