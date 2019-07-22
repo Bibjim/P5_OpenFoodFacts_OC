@@ -25,10 +25,10 @@ Lien Trello: https://trello.com/b/FaKmnu5U/projet-5-off
 ### 2 - Launch the application (**App.py**)
         (env) python3 App.py
 
-- Application menu:
-    - 1 - Load the database locally* ?
-    - 2 - Search for a product in the categories ?
-    - 3 - Access saved products ?
-    - 4 - Clear backup products ?
+- Menu principal de la base de données:
+    - 1 - Charger la base de données en local* ?
+    - 2 - Rechercher un produit de substitution dans la base ?
+    - 3 - Accéder de vos produits favoris ?
+    - 4 - Gestion de la base (suppression des données)
 
 ***When using for the first time, load the database locally for the application to work*** *

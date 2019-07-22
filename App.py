@@ -67,6 +67,8 @@ while main_app_loop is True:
                     break
 
                 elif choice_dl.upper() == "O":
+                    db_create = db_request()
+                    db_create.create_db()
                     dfdownload = db_request()
                     dfdownload.create_db_cat()
                     dfdownload.create_db_prod()

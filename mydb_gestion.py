@@ -16,6 +16,17 @@ from substitue_products import *
 
 class db_request():
 
+    def create_db(self):
+
+        self.db_connect = pymysql.connect("localhost","root","")
+        db = self.db_connect.cursor()
+
+        database_sql = 'db_Openfoodfacts.sql'
+        mydb_file = open(database_sql,'r')
+        mydb = " ".join(mydb_file.readline())
+        db.execute(mydb)
+        print("La base de donnée a bien été créée")
+
     def create_db_cat(self):
 
         self.db_connect = pymysql.connect("localhost","root","","mydb")
@@ -34,8 +45,10 @@ class db_request():
                 continue
             dfAll = (categories_name, categories['url'])
 
-            db.execute("INSERT IGNORE INTO `mydb`.`Categories` (category_name, category_url) VALUES ('{}', '{}')".format(
-                categories_name, categories['url']))
+            insert_cat = "INSERT IGNORE INTO `mydb`.`Categories` \
+                (category_name, category_url) VALUES ('{}', '{}')"\
+                .format(categories_name, categories['url'])
+            db.execute(insert_cat)
             self.db_connect.commit()
 
                 
@@ -85,9 +98,13 @@ class db_request():
                     product_shop = ("Shop inconnu")
                 product_url = products['url']
 
-                rec = "INSERT IGNORE INTO `mydb`.`Products`(product_name, product_shop, product_nutri, product_url, Categories_category_id) VALUES ('{}','{}','{}','{}','{}') ON DUPLICATE KEY UPDATE product_name = '{}'".format(product_name, product_shop, product_nutri, product_url, list_id_cat, product_name)
-                #print(rec)
-                db.execute(rec)
+                insert_prod = "INSERT IGNORE INTO `mydb`.`Products`\
+                    (product_name, product_shop, product_nutri, product_url, \
+                    Categories_category_id) VALUES ('{}','{}','{}','{}','{}') \
+                    ON DUPLICATE KEY UPDATE product_name = '{}'"\
+                    .format(product_name, product_shop, product_nutri, \
+                    product_url, list_id_cat, product_name)
+                db.execute(insert_prod)
                 self.db_connect.commit()
         
         db.execute("SELECT COUNT(*) FROM `mydb`.`Products`")
