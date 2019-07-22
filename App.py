@@ -5,15 +5,15 @@
 """
 !!!! OpenFoodFacts App !!!!
 Author: Jimi Bourgeois
-Version: 20190419
+Version: 2019-07-22
 Project: Project 5 OpenClassrooms
 Code language: Python3
 Coding: utf-8
 """
-# Import specifique modules
+# Specific import modules
 import pymysql.cursors
 
-# Import standard modules
+# Standard import modules
 import urllib.request
 import json
 import time
@@ -26,15 +26,9 @@ from substitue_products import *
 
 main_app_loop = True
 
-def clear_prompt():
-    """ Clear the prompt """
-    if sys.platform == "Linux":
-        os.system("clear")
-
-
+# Main loop
 while main_app_loop is True:
     choice = 0
-    clear_prompt()
     
     print("\nBienvenue sur la base de données d'OpenFoodFacts.com (Version FR)\n")
     print("Menu principal de la base de données:")
@@ -49,7 +43,7 @@ while main_app_loop is True:
 
         if choice.upper() == "Q":
             print("\n!!! A bientôt sur l'application OpenFoodFacts !!!")
-            time.sleep(3)
+            time.sleep(2)
             main_app_loop = False
             break
 
@@ -69,6 +63,7 @@ while main_app_loop is True:
                 elif choice_dl.upper() == "O":
                     db_create = db_request()
                     db_create.create_db()
+                    db_create.create_tables()
                     dfdownload = db_request()
                     dfdownload.create_db_cat()
                     dfdownload.create_db_prod()
