@@ -20,6 +20,7 @@ import time
 import os
 import sys
 
+# Import modules for app operation
 from mydb_gestion import *
 from substitue_products import *
 
@@ -30,6 +31,7 @@ main_app_loop = True
 while main_app_loop is True:
     choice = 0
     
+    # Main menu display
     print("\nBienvenue sur la base de données d'OpenFoodFacts.com (Version FR)\n")
     print("Menu principal de la base de données:")
     print("1 - Charger la base de données en local* ?")
@@ -46,12 +48,12 @@ while main_app_loop is True:
             time.sleep(2)
             main_app_loop = False
             break
-
-        elif choice.isdigit() == False or int(choice) >= 7 or int(choice) == 0:
+        # Bound the choice of the main menu
+        elif choice.isdigit() == False or int(choice) >= 4 or int(choice) == 0:
             print("\nMerci de bien vouloir entrer un chiffre compris entre 1 et 4\n")
             time.sleep(2)
             break
-        
+        # Choice of menu 1 "creation of the database and local loading of the data"
         elif int(choice) == 1:
             choice_dl = 0
             while choice_dl is 0:
@@ -61,20 +63,28 @@ while main_app_loop is True:
                     break
 
                 elif choice_dl.upper() == "O":
-                    db_create = db_request()
-                    db_create.create_db()
-                    db_create.create_tables()
-                    dfdownload = db_request()
-                    dfdownload.create_db_cat()
-                    dfdownload.create_db_prod()
-                    break
+                    # Create the database ans tables
+                    db_create = db_request() # class of "mydb_gestion.py"
+                    db_create.create_db() # def of "mydb_gestion.py"
+                    db_create.create_tables() # def of "mydb_gestion.py"
 
+                    # Loading API data
+                    dfdownload = db_request() # class of "mydb_gestion.py"
+                    dfdownload.create_db_cat() # def of "mydb_gestion.py"
+                    dfdownload.create_db_prod() # def of "mydb_gestion.py"
+                    break
+        
+        # Choice of menu 2 "search for a substitute product"
         elif int(choice) == 2:
-            search_prod = db_menu()
-            search_prod.search_prod()
+            search_prod = db_menu() # class of "substitute_products.py"
+            search_prod.search_prod() # def of "substitute_products.py"
+
+        # Choice of menu 3 "show substitute product"
         elif int(choice) == 3:
-            access_saved = db_menu()
-            access_saved.search_substitute()
+            access_saved = db_menu() # class of "substitute_products.py"
+            access_saved.search_substitute() # def of "substitute_products.py"
+        
+        # Choice of menu 4 "Delete menu"
         elif int(choice) == 4:
             choice_del = 0
             while choice_del is 0:
@@ -84,7 +94,8 @@ while main_app_loop is True:
                     break
                 elif choice_del.upper() == "O":
                     del_choice = 0
-
+                    
+                    # Display of the delete menu
                     print("\nListe des table de la base de données:")
                     print("1 - Table Categories")
                     print("2 - Table Products")
@@ -95,25 +106,26 @@ while main_app_loop is True:
                     print("Toutes données supprimées sont définitives")
 
                     while del_choice == 0:
-                        del_choice = input("\nSelectionner la table à supprimer: (Tapez A pour annuler)")
+                        del_choice = input("\nSelectionner la table à supprimer (Q pour annuler): ")
 
-                        if del_choice.upper() == "A":
+                        if del_choice.upper() == "Q":
                             choice = False
                             break
-
-                        elif del_choice.isdigit() == False or int(del_choice) >= 4 or int(del_choice) == 0:
+                        
+                        # Bound the choice of the menu
+                        elif del_choice.isdigit() == False or int(del_choice) >= 3 or int(del_choice) == 0:
                             print("\nMerci de bien vouloir entrer un chiffre compris entre 1 et 3\n")
                             time.sleep(2)
                             del_choice = 0
                         
                         elif int(del_choice) == 1:
-                            clear_backup = db_request()
-                            clear_backup.db_cleardata_cat()
+                            clear_backup = db_request() # class of "mydb_gestion.py"
+                            clear_backup.db_cleardata_cat() # def of "mydb_gestion.py"
 
                         elif int(del_choice) == 2:
-                            clear_backup = db_request()
-                            clear_backup.db_cleardata_prod()
+                            clear_backup = db_request() # class of "mydb_gestion.py"
+                            clear_backup.db_cleardata_prod() # def of "mydb_gestion.py"
                         
                         elif int(del_choice) == 3:
-                            clear_backup = db_request()
-                            clear_backup.db_cleardata_sub()
+                            clear_backup = db_request() # class of "mydb_gestion.py"
+                            clear_backup.db_cleardata_sub() # def of "mydb_gestion.py"

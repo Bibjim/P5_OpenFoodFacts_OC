@@ -7,13 +7,11 @@
     Version: 2019-07-22
 '''
 
-import urllib.request as req
-import json
+# Specific import modules
 import pymysql.cursors
-import time
-import random
 
-from mydb_gestion import *
+# Standard import modules
+import time
 
 class db_menu():
     """This class is used to search for substitute products in the database
@@ -200,7 +198,7 @@ class db_menu():
                 time.sleep(2)
                 break
             elif choice.upper() == "O":
-                # Requete pour afficher la liste des produits de substitution
+                # Request to display the list of substitute products
                 save_show = "SELECT * FROM PRODUCTS INNER JOIN SUBSTITUTE ON \
                     PRODUCTS.product_id = SUBSTITUTE.save_product_id \
                     INNER JOIN CATEGORIES ON PRODUCTS.Categories_category_id = \
