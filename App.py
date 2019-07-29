@@ -36,7 +36,7 @@ while main_app_loop is True:
     print("Menu principal de la base de données:")
     print("1 - Charger la base de données en local* ?")
     print("2 - Rechercher un produit de substitution dans la base ?")
-    print("3 - Accéder de vos produits favoris ?")
+    print("3 - Accéder à vos produits favoris ?")
     print("4 - Gestion de la base (suppression des données)")
     print("\n *Pour la première utilisation du programme, charger les données dans la base en local")
     
@@ -49,7 +49,7 @@ while main_app_loop is True:
             main_app_loop = False
             break
         # Bound the choice of the main menu
-        elif choice.isdigit() == False or int(choice) >= 4 or int(choice) == 0:
+        elif choice.isdigit() == False or int(choice) >= 5 or int(choice) == 0:
             print("\nMerci de bien vouloir entrer un chiffre compris entre 1 et 4\n")
             time.sleep(2)
             break

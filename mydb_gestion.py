@@ -82,7 +82,7 @@ class db_request():
         db.execute(table_cat)
         db.execute(table_prod)
         db.execute(table_sub)
-        print("La structure de la base de données à bien été créée")
+        print("La structure de la base de données a bien été créée")
         print("Merci de patienter pendant le chargement des données de l'API en local")
 
     def create_db_cat(self):
@@ -100,10 +100,10 @@ class db_request():
         dfAll = json.loads(jsonstr)
 
         # Loop to import the desired quantity of categories
-        for categories in dfAll['tags'][:30]:
+        for categories in dfAll['tags'][:28]:
             categories_name = categories['name']
             categories_name = categories_name.replace("'", " ")
-            if len(categories_name) >= 30:
+            if len(categories_name) >= 28:
                 continue
             dfAll = (categories_name, categories['url'])
 

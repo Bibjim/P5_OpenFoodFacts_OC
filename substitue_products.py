@@ -41,7 +41,7 @@ class db_menu():
                     FROM `mydb`.`Categories`"
                 # Command to execute the request
                 db.execute(show_list_cat)
-                # Boucle d'affectation des variables
+                # Variable assignment loop
                 for ligne in db.fetchall():
                     list_id_cat = ligne[0]
                     list_name_cat = ligne[1]
@@ -125,6 +125,7 @@ class db_menu():
                         for ligne_sub in db.fetchall():
                             sub_name = ligne_sub[1]
                             sub_nutri = ligne_sub[3]
+                            # Uppercase display
                             sub_nutri = sub_nutri.upper()
                             
                             # Definition of the request to return the product 
